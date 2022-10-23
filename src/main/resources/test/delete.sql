@@ -1,0 +1,1 @@
+delete from usuario where id in(111,222,333);
