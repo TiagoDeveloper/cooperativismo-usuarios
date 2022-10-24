@@ -7,10 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.tiagodeveloper.controller.response.UserResponse;
 import com.tiagodeveloper.dto.UsuarioDTO;
 import com.tiagodeveloper.entity.UsuarioRepository;
+import com.tiagodeveloper.enums.UserStatus;
 import com.tiagodeveloper.exception.BadRequestException;
-import com.tiagodeveloper.exception.NotFoundException;
 import com.tiagodeveloper.service.UsuarioService;
 import com.tiagodeveloper.service.converters.UsuarioConverter;
 
@@ -37,12 +38,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public UsuarioDTO getById(Integer id) {
-		var optionalEntity = usuarioRepository.findById(id);
+	public UserResponse getByDocumento(String cpf) {
+		var exists = usuarioRepository.existsByDocumento(cpf);
 		
-		var entity = optionalEntity.orElseThrow(() -> new NotFoundException("Not found!!"));
+		if(exists) {
+			return UserResponse.builder()
+					.status(UserStatus.ABLE_TO_VOTE)
+					.build();
+		}
 		
-		return UsuarioConverter.converter(entity);
+		return UserResponse.builder()
+				.status(UserStatus.UNABLE_TO_VOTE)
+				.build();
 	}
 
 }

@@ -3,6 +3,7 @@ package com.tiagodeveloper.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.tiagodeveloper.controller.response.UserResponse;
 import com.tiagodeveloper.dto.UsuarioDTO;
 
 public interface UsuarioService {
@@ -11,5 +12,5 @@ public interface UsuarioService {
 	
 	public Page<UsuarioDTO> getAll(Pageable pageable);
 	
-	public UsuarioDTO getById(Integer id);
+	public UserResponse getByDocumento(String cpf);
 }

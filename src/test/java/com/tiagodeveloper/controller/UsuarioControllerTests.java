@@ -19,7 +19,9 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tiagodeveloper.controller.response.UserResponse;
 import com.tiagodeveloper.dto.UsuarioDTO;
+import com.tiagodeveloper.enums.UserStatus;
 
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
@@ -45,7 +47,7 @@ class UsuarioControllerTests {
 		}
 	)
 	void getAllTest() throws Exception {
-		mockMvc.perform(get("/usuario")
+		mockMvc.perform(get("/users")
 	            .contentType("application/json"))
 	            .andDo(print())
 	            .andExpect(status().isOk())
@@ -59,7 +61,7 @@ class UsuarioControllerTests {
 	void createTest() throws Exception {
 		
 		var expectedRecord = UsuarioDTO.builder().nome("Raimundo").documento("08774774000").build();
-		var actualRecord = om.readValue(mockMvc.perform(post("/usuario")
+		var actualRecord = om.readValue(mockMvc.perform(post("/users")
 	            .contentType("application/json")
 	            .content(om.writeValueAsString(expectedRecord)))
 	            .andDo(print())
@@ -84,16 +86,14 @@ class UsuarioControllerTests {
 			)
 		}
 	)
-	void getByIdTest() throws Exception {
+	void getByDocumentoTest() throws Exception {
 		
-		var expectedRecord = UsuarioDTO.builder().documento("97794397065").build();
-		
-		var actualRecord = om.readValue(mockMvc.perform(get("/usuario/111")
+		var actualRecord = om.readValue(mockMvc.perform(get("/users/97794397065")
 	            .contentType("application/json"))
 	            .andDo(print())
-	            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(), UsuarioDTO.class);
+	            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString(), UserResponse.class);
 
-	    assertEquals(expectedRecord.getDocumento(), actualRecord.getDocumento());
+	    assertEquals(UserStatus.ABLE_TO_VOTE, actualRecord.getStatus());
 		
 	}
 

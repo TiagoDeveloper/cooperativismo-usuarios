@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tiagodeveloper.controller.response.UserResponse;
 import com.tiagodeveloper.dto.UsuarioDTO;
 import com.tiagodeveloper.service.UsuarioService;
 
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/users")
 public class UsuarioController {
 
 	@Autowired
@@ -31,10 +32,10 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioService.getAll(pageable));
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{cpf}")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<UsuarioDTO> getAll(@PathVariable("id") Integer id){
-		return ResponseEntity.ok(usuarioService.getById(id));
+	public ResponseEntity<UserResponse> getBygetByDocumento(@PathVariable("cpf") String cpf){
+		return ResponseEntity.ok(usuarioService.getByDocumento(cpf));
 	}
 	
 	@PostMapping
